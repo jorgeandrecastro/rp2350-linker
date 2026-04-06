@@ -1,14 +1,6 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+#![no_std]
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+// 🦅 rp2350-linker
+// Cette crate est une infrastructure de liaison pour le RP2350.
+// Elle ne contient pas de code exécutable, elle injecte le script 
+// de linker via son build.rs.

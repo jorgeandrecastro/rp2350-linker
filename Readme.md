@@ -25,7 +25,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-rp2350-linker = "0.1.0"
+rp2350-linker = "0.1.1"
 🛠 Usage
 In your main.rs, simply import the crate to activate the linker automation:
 

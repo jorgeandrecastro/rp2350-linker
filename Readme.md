@@ -25,7 +25,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-rp2350-linker = "0.2.0"
+rp2350-linker = "0.2.1"
 🛠 Usage
 In your main.rs, simply import the crate to activate the linker automation:
 
@@ -58,6 +58,40 @@ rustflags = [
 
 [build]
 target = "thumbv8m.main-none-eabihf"
+
+🚀 Pro Tips: Workflow Automation
+For those who prefer a manual control or have permission issues with direct runners, you can use this flash.sh script. It automates the compilation, conversion to UF2 (specific to RP2350 ARM-S), and flashing using picotool.
+
+📄 flash.sh
+Create a file named flash.sh in your project root:
+
+Bash
+#!/bin/bash
+# Ensure Cargo is in the PATH (especially for sudo environments)
+export PATH="$HOME/.cargo/bin:$PATH"
+
+echo "🦀 Step 1: Compiling in release mode..."
+cargo build --release || { echo "❌ Compilation failed"; exit 1; }
+
+
+BINARY_NAME="yourse"
+TARGET_PATH="target/thumbv8m.main-none-eabihf/release/$BINARY_NAME"
+
+echo "📦 Step 2: Converting ELF to UF2 for RP2350..."
+picotool uf2 convert -t elf "$TARGET_PATH" nameofyourwantedfile.uf2 --family rp2350-arm-s
+
+echo "⚡ Step 3: Flashing to device (requires sudo for USB access)..."
+sudo picotool load nameofyourwantedfile.uf2 -x
+
+echo "✅ Done!  is flying! 🦅"
+🛠️ How to use it:
+Make the script executable: chmod +x flash.sh
+
+Run it: ./flash.sh
+
+Note: This script uses picotool. Make sure you have it installed on your system. The --family rp2350-arm-s flag is mandatory for the new Raspberry Pi Pico 2 architecture.
+
+
 🛡 License
 This project is licensed under the GPL-2.0-or-later.
 Protecting open-source infrastructure for the community.

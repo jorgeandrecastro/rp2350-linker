@@ -1,0 +1,23 @@
+[package]
+name = "rp2350-linker"
+version = "0.1.0"
+edition = "2021"
+authors = ["Jorge Andre Castro <georgeandrec@gmail.com>"]
+license = "GPL-2.0-or-later"
+description = "Zero-config linker and boot support for RP2350 (Pico 2) in Rust. Pure no_std infrastructure."
+repository = "https://github.com/jorgeandrecastro/rp2350-linker"
+documentation = "https://docs.rs/rp2350-linker"
+readme = "Readme.md"
+keywords = ["rp2350", "pico2", "linker", "no_std", "embedded"]
+categories = ["embedded", "no-std", "development-tools"]
+
+[profile.release]
+opt-level = "z"      # Taille minimale (crucial pour le boot block)
+lto = true           # Optimisation globale au lien
+codegen-units = 1    # Maximise la cohérence du binaire
+panic = "abort"      # Pas de overhead de panic
+strip = true         # Foudroie les symboles de debug
+
+[features]
+default = []
+# On garde ça simple : le but est de linker et booter, point barre.

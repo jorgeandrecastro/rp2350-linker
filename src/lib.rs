@@ -1,4 +1,5 @@
 #![no_std]
+#![forbid(unsafe_code)]
 
 // 🦅 rp2350-linker
 // Cette crate est une infrastructure de liaison pour le RP2350.

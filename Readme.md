@@ -1,9 +1,11 @@
+[![Crates.io](https://img.shields.io/crates/v/rp2350-linker.svg)](https://crates.io/crates/rp2350-linker)
+[![License: GPL-2.0-or-later](https://img.shields.io/badge/License-GPL_2.0_or_later-blue.svg)](https://opensource.org/licenses/GPL-2.0)
+
+[![docs.rs](https://docs.rs/rp2350-linker/badge.svg)](https://docs.rs/rp2350-linker)
+
 # 🦅 rp2350-linker
 
 Zero-config linker and boot support for the RP2350 (Raspberry Pi Pico 2) in Rust.
-
-[![Crates.io](https://img.shields.io/crates/v/rp2350-linker.svg)](https://crates.io/crates/rp2350-linker)
-[![License: GPL-2.0-or-later](https://img.shields.io/badge/License-GPL_2.0_or_later-blue.svg)](https://opensource.org/licenses/GPL-2.0)
 
 Stop fighting with `memory.x` and custom linker scripts. `rp2350-linker` provides an automated, transparent way to boot your `no_std` Rust applications on the **RP2350** (Pico 2) with correct memory mapping and boot blocks.
 
@@ -23,13 +25,15 @@ Stop fighting with `memory.x` and custom linker scripts. `rp2350-linker` provide
 
 Add this to your `Cargo.toml`:
 
-```toml
+````toml
 [dependencies]
-rp2350-linker = "0.2.1"
-🛠 Usage
+rp2350-linker = "0.2.2"
+
+````
+# 🛠 Usage
 In your main.rs, simply import the crate to activate the linker automation:
 
-Rust
+````rust
 #![no_std]
 #![no_main]
 
@@ -43,10 +47,12 @@ fn main() -> ! {
     // Your elite RP2350 code here...
     loop {}
 }
-Recommended .cargo/config.toml
-To take full advantage of the Pico 2, use these flags:
 
-Ini, TOML
+````
+
+**Recommended .cargo/config.toml**
+To take full advantage of the Pico 2, use these flags:
+````
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
 runner = "elf2uf2-rs -d"
 
@@ -59,13 +65,15 @@ rustflags = [
 [build]
 target = "thumbv8m.main-none-eabihf"
 
-🚀 Pro Tips: Workflow Automation
+````
+
+# 🚀 Pro Tips: Workflow Automation
 For those who prefer a manual control or have permission issues with direct runners, you can use this flash.sh script. It automates the compilation, conversion to UF2 (specific to RP2350 ARM-S), and flashing using picotool.
 
-📄 flash.sh
+**📄 flash.sh**
 Create a file named flash.sh in your project root:
 
-Bash
+````
 #!/bin/bash
 # Ensure Cargo is in the PATH (especially for sudo environments)
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -84,17 +92,18 @@ echo "⚡ Step 3: Flashing to device (requires sudo for USB access)..."
 sudo picotool load nameofyourwantedfile.uf2 -x
 
 echo "✅ Done!  is flying! 🦅"
-🛠️ How to use it:
-Make the script executable: chmod +x flash.sh
+````
+# 🛠️ How to use it:
+Make the script executable: **chmod +x flash.sh**
 
-Run it: ./flash.sh
+Run it: **./flash.sh**
 
-Note: This script uses picotool. Make sure you have it installed on your system. The --family rp2350-arm-s flag is mandatory for the new Raspberry Pi Pico 2 architecture.
+**Note:** This script uses picotool. Make sure you have it installed on your system. The --family rp2350-arm-s flag is mandatory for the new Raspberry Pi Pico 2 architecture.
 
 
-🛡 License
+# 🛡 License
 This project is licensed under the GPL-2.0-or-later.
 Protecting open-source infrastructure for the community.
 
-🦅 About
+# 🦅 About
 Developed by Jorge Andre Castro.

@@ -8,62 +8,45 @@ Zero-config linker and boot support for the RP2350 (Raspberry Pi Pico 2) in Rust
 
 Stop fighting with `memory.x` and custom linker scripts. `rp2350-linker` automatically injects the correct memory layout and boot metadata so your `no_std` Rust applications can run cleanly on the RP2350.
 
----
+> [!IMPORTANT]
+> Version `0.3` was an experimental attempt to add RISC-V (Hazard3) support. Due to lack of stabilization in upstream runtimes (`riscv-rt`) for the RP2350, RISC-V support has been completely dropped.
+>
+> Please avoid version `0.3`. Use version `0.4` (or earlier stable versions like `0.1` and `0.2`), which focus exclusively on a robust, rock-solid ARM Cortex-M33 experience. RISC-V support will return when the ecosystem stabilizes.
 
 ## ✨ Key features
 
-- Zero-setup memory layout injection at compile time.
-- Dual-architecture support for ARM Cortex-M33 and RISC-V (Hazard3).
-- Boot-ready support for the required `.start_block` and `.boot_info` sections.
-- `picotool` compatibility via `.bi_entries` mapping.
-- Seamless integration with `cortex-m-rt`, `embassy`, and `riscv-rt`.
-- Optimized defaults for 4 MB flash and 512 KB RAM.
-
----
+- Zero-setup memory layout injection at compile time
+- Dedicated ARM Cortex-M33 support
+- Boot-ready support for the required `.start_block` and `.boot_info` sections
+- `picotool` compatibility via `.bi_entries` mapping
+- Seamless integration with `cortex-m-rt` and `embassy`
+- Optimized defaults for 4 MB flash and 512 KB RAM
 
 ## 📦 Installation
 
 Add the crate to your `Cargo.toml`:
 
-### ARM Cortex-M33 (default)
-
 ```toml
 [dependencies]
-rp2350-linker = "0.3"
+rp2350-linker = "0.4"
 ```
 
-### RISC-V (Hazard3)
+## 🛠️ Usage
 
-```toml
-[dependencies]
-rp2350-linker = { version = "0.3", features = ["riscv"] }
-```
-
----
-
-## 🛠 Usage
-
-Import the crate in your application entry point. The build script automatically detects whether you are compiling for ARM or RISC-V and injects the appropriate linker rules.
+Import the crate in your application entry point. The build script automatically injects the required linker rules for ARM Cortex-M33.
 
 ```rust
 #![no_std]
 #![no_main]
 
 use rp2350_linker as _;
-
-#[cfg(target_arch = "arm")]
 use cortex_m_rt::entry;
-
-#[cfg(target_arch = "riscv32")]
-use riscv_rt::entry;
 
 #[entry]
 fn main() -> ! {
     loop {}
 }
 ```
-
----
 
 ## ⚙️ Recommended `.cargo/config.toml` for ARM
 
@@ -81,10 +64,6 @@ rustflags = [
 target = "thumbv8m.main-none-eabihf"
 ```
 
-This keeps the ARM build flow aligned with `cortex-m-rt` and the Pico 2 target.
-
----
-
 ## 🚀 Flashing workflow
 
 To automate build, UF2 conversion, and flashing, create a `flash.sh` script at the root of your project:
@@ -95,25 +74,17 @@ set -e
 
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# Default is ARM. Use: ./flash.sh riscv
-if [ "$1" == "riscv" ]; then
-    TARGET="riscv32imac-unknown-none-elf"
-    FAMILY="rp2350-riscv"
-    CARGO_FLAGS="--no-default-features --features riscv"
-    echo "🦊 Target: RISC-V (Hazard3)"
-else
-    TARGET="thumbv8m.main-none-eabihf"
-    FAMILY="rp2350-arm-s"
-    CARGO_FLAGS=""
-    echo "🦅 Target: ARM Cortex-M33"
-fi
+TARGET="thumbv8m.main-none-eabihf"
+FAMILY="rp2350-arm-s"
+
+echo "🦅 Target: ARM Cortex-M33"
 
 CRATE_NAME=$(cargo metadata --no-deps --format-version 1 | python3 -c 'import sys, json; print(json.load(sys.stdin)["packages"][0]["name"])')
 TARGET_PATH="target/$TARGET/release/$CRATE_NAME"
 UF2_NAME="${CRATE_NAME}.uf2"
 
 echo "🦀 Step 1: Compiling release for $TARGET..."
-cargo build --release --target "$TARGET" $CARGO_FLAGS || {
+cargo build --release --target "$TARGET" || {
     echo "❌ Compilation failed"
     exit 1
 }
@@ -131,23 +102,15 @@ Then make it executable and run it:
 
 ```bash
 chmod +x flash.sh
-
-# ARM Cortex-M33 (default)
 ./flash.sh
-
-# RISC-V (Hazard3)
-./flash.sh riscv
 ```
 
-> Note: this workflow requires `picotool` to be installed and available in your `PATH`.
+> [!NOTE]
+> This workflow requires `picotool` to be installed and available in your `PATH`.
 
----
-
-## 🛡 License
+## 🛡️ License
 
 This project is licensed under the GPL-2.0-or-later.
-
----
 
 ## 🦅 About
 

@@ -110,7 +110,13 @@ chmod +x flash.sh
 
 ## 🛡️ License
 
-This project is licensed under the GPL-2.0-or-later.
+Licensed under either of:
+
+    MIT license (http://opensource.org/licenses/MIT)
+
+    Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+
+at your option.
 
 ## 🦅 About
 

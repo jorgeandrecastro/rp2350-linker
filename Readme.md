@@ -1,5 +1,5 @@
 [![Crates.io](https://img.shields.io/crates/v/rp2350-linker.svg)](https://crates.io/crates/rp2350-linker)
-[![License: GPL-2.0-or-later](https://img.shields.io/badge/License-GPL_2.0_or_later-blue.svg)](https://opensource.org/licenses/GPL-2.0)
+[![License: MIT OR Apache-2.0](https://img.shields.io/badge/License-MIT%20or%20Apache--2.0-blue.svg)](https://opensource.org/licenses/MIT)
 [![docs.rs](https://docs.rs/rp2350-linker/badge.svg)](https://docs.rs/rp2350-linker)
 
 # 🦅 rp2350-linker

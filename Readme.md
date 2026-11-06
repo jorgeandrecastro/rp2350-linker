@@ -28,7 +28,7 @@ Add the crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-rp2350-linker = "0.4"
+rp2350-linker = "0.5"
 ```
 
 ## 🛠️ Usage

@@ -8,10 +8,10 @@ Zero-config linker and boot support for the RP2350 (Raspberry Pi Pico 2) in Rust
 
 Stop fighting with `memory.x` and custom linker scripts. `rp2350-linker` automatically injects the correct memory layout and boot metadata so your `no_std` Rust applications can run cleanly on the RP2350.
 
-> [!IMPORTANT]
-> Version `0.3` was an experimental attempt to add RISC-V (Hazard3) support. Due to lack of stabilization in upstream runtimes (`riscv-rt`) for the RP2350, RISC-V support has been completely dropped.
+> [!NOTE]
+> Version `0.3` was an experimental attempt to add RISC-V (Hazard3) support. RISC-V support is not included in this release.
 >
-> Please avoid version `0.3`. Use version `0.4` (or earlier stable versions like `0.1` and `0.2`), which focus exclusively on a robust, rock-solid ARM Cortex-M33 experience. RISC-V support will return when the ecosystem stabilizes.
+> Version `1.0.0` is stable and tested, with a focus on ARM Cortex-M33. No major changes are planned for now.
 
 ## ✨ Key features
 
@@ -28,7 +28,7 @@ Add the crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-rp2350-linker = "0.5"
+rp2350-linker = "1.0.0"
 ```
 
 ## 🛠️ Usage
